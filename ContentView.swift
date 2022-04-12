@@ -1,14 +1,17 @@
 import SwiftUI
+import SpriteKit
 
 struct ContentView: View {
+    var scene: SKScene {
+        guard let scene = SKScene(fileNamed: "GameScene") as? GameScene else { return GameScene()}
+        scene.stateMachine = StateMachine()
+        scene.scaleMode = .fill
+        return scene
+    }
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-                .opacity(0.8)
-            Text("Hello, world!")
-        }
+        SpriteView(scene: scene)
+            .ignoresSafeArea()
     }
 }
     

@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  StateMachine.swift
 //  wwdc22
 //
 //  Created by André Schueda on 12/04/22.
@@ -56,6 +56,11 @@ class StateMachine {
         
         initialState = atom
         currentState = initialState
+    }
+    
+    func transition(to option: Int) -> State {
+        currentState = currentState.options[option].state
+        return currentState
     }
 }
 
