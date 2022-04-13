@@ -36,7 +36,7 @@ class StateMachine {
         let rock = StateMachineSymbol(phrase: "You're part of a smaller fragment of what you used to be part of.", options: [], sceneName: "rock", pixelColor: "rock")
         let water = StateMachineSymbol(phrase: "You're part of the water.", options: [], sceneName: "Water", pixelColor: "water")
         let bottle = StateMachineSymbol(phrase: "You're inside a bottle.", options: [], sceneName: "bottle", pixelColor: "bottle")
-        let human = StateMachineSymbol(phrase: "You're part of a conscious been", options: [], sceneName: "human", pixelColor: "human")
+        let human = StateMachineSymbol(phrase: "You're part of a conscious been.", options: [], sceneName: "human", pixelColor: "human")
         let dream = StateMachineSymbol(phrase: "", options: [], sceneName: "dream", pixelColor: "dream")
         let nightmare = StateMachineSymbol(phrase: "You always thought you were unbreakable, but now you're part of the end.", options: [], sceneName: "nightmare", pixelColor: "nightmare")
         
@@ -51,7 +51,7 @@ class StateMachine {
         water.options = [(text: "Am I the water itself?", state: bottle)]
         bottle.options = [(text: "I always thought i'd be part of something bigger", state: human)]
         human.options = [(text: "Could I be part of beautiful dreams?", state: dream), (text: "Could I be part of nasty nightmares?", state: nightmare)]
-        dream.options = [(text: "I hope this means something", state: human)]
+        dream.options = [(text: "I hope this means something...", state: human)]
         nightmare.options = [(text: "How come I be part of something so big?", state: atom)]
         
         initialState = atom

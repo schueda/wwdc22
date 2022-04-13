@@ -3,16 +3,14 @@ import SpriteKit
 
 struct ContentView: View {
     
-    @State var texts: [String] = ["0"]
+    @StateObject var store = ContentViewStore()
+
+    @State var narratorText: String = ""
+    @State var buttonTexts: [String] = []
     
-    var scene: SKScene {
+    var scene: GameScene {
         let scene = GameScene()
-        scene.stateMachine = StateMachine()
-        let node = SKSpriteNode()
-        node.color = .systemRed
-        node.size = scene.size
-        node.position = CGPoint(x: 0.5, y: 0.5)
-        scene.addChild(node)
+        scene.stateMachine = store.stateMachine
         return scene
     }
     
@@ -25,8 +23,9 @@ struct ContentView: View {
             VStack {
                 HStack {
                     Spacer()
-                    Text("You're an atom")
+                    Text(narratorText)
                         .padding(.vertical, 16)
+                        .multilineTextAlignment(.center)
                     Spacer()
                 }
                 .background(Color.gray.opacity(0.7))
@@ -36,40 +35,41 @@ struct ContentView: View {
                 Spacer()
                 
                 VStack() {
-                    ForEach(0..<texts.count, id: \.self) { i in
+                    ForEach(0..<buttonTexts.count, id: \.self) { i in
                         HStack(alignment: .top) {
+                            Spacer()
                             Button {
                                 optionSelected(index: i)
                             } label: {
-                                Text(texts[i])
+                                Text("\(i+1). \(buttonTexts[i])")
                                     .foregroundColor(.black)
-                                    .padding(.bottom, 16)
-                                    .lineLimit(<#T##number: Int?##Int?#>)
-                            }.background(Color.blue)
+                                    .padding(.top, 16)
+                                    .lineLimit(2)
+                            }
+                            Spacer()
                         }
-                        .background(Color.yellow)
                     }
                     Spacer()
-                }.frame(height: 140)
-                    .background(Color.gray)
-                
+                }
+                .frame(height: 150)
+                .background(Color.gray.opacity(0.7))
+                .padding(.bottom, 16)
+                .padding(.horizontal, 16)
             }
             
+        }.onAppear {
+            let initialState = scene.stateMachine?.currentState
+            narratorText = initialState?.phrase ?? ""
+            buttonTexts = initialState?.options.map { $0.text } ?? []
         }
     }
     
     func optionSelected(index: Int) {
-        // Mexe na state machine
-        // Atualiza textos
-        print(index)
-        
-        if (texts.count == 3) {
-            texts = ["0"]
-        } else {
-            var newTexts = texts
-            newTexts.append("O CU DO CEBOLINHA É VERDE ASSIM COMO O SEU CACHORRO FLOQUINHO")
-            texts = newTexts
-        }
+        let currentState = scene.stateMachine?.transition(to: index)
+        narratorText = currentState?.phrase ?? ""
+        buttonTexts = currentState?.options.map { $0.text } ?? []
+        scene.present(currentState)
     }
+
 }
 
