@@ -17,7 +17,7 @@ class GameScene: SKScene {
         present(initialState)
     }
     
-    func present(_ state: State?) {
+    func present(_ state: StateMachineSymbol?) {
         
     }
 }
