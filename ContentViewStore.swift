@@ -9,6 +9,7 @@ import Foundation
 
 class ContentViewStore: ObservableObject {
     
-    var stateMachine = StateMachine() 
+    var stateMachine = StateMachine()
+    var scene = GameScene()
     
 }

@@ -10,45 +10,48 @@ import SpriteKit
 
 class GameScene: SKScene {
     var stateMachine: StateMachine?
-    
-    var showingNode: SKSpriteNode?
-    var outsideNode: SKSpriteNode?
-    
-    lazy var backgroundNode1: SKSpriteNode = {
-        let node = SKSpriteNode()
-        node.color = .systemRed
-        node.size = size
-        node.position = CGPoint(x: 0.5, y: 0.5)
-        return node
-    }()
-    
-    lazy var backgroundNode2: SKSpriteNode = {
-        let node = SKSpriteNode()
-        node.color = .systemBlue
-        node.size = size
-        node.position = CGPoint(x: 1.5, y: 0.5)
-        return node
-    }()
+    var presentingBackground: SKSpriteNode?
     
     override func didMove(to view: SKView) {
-        addChild(backgroundNode1)
-        addChild(backgroundNode2)
-        showingNode = backgroundNode1
-        outsideNode = backgroundNode2
+        let node = createNode(for: stateMachine?.initialState)
         
+        presentingBackground = node
+    }
+    
+    func createNode(for state: StateMachineSymbol?) -> SKSpriteNode {
+        guard let state = state else { return SKSpriteNode() }
+        let node = SKSpriteNode()
+        node.size = size
+        var textures: [SKTexture] = []
+        for i in (0..<state.frames) {
+            textures.append(SKTexture(imageNamed: "\(state.sceneName)Frame\(i+1)"))
+        }
+        let animation = SKAction.animate(with: textures, timePerFrame: 0.1)
+        let animationLoop = SKAction.repeatForever(animation)
+        addChild(node)
+        node.run(animationLoop)
         
-        let initialState = stateMachine?.initialState
-        present(initialState)
+        return node
     }
     
     func present(_ state: StateMachineSymbol?) {
-        let moveIn = SKAction.move(to: CGPoint(x: 0.5, y: 0.5), duration: 0.5)
+        moveOutPresentingNode()
+        moveInNewNode(of: state)
+    }
+    
+    func moveOutPresentingNode() {
         let moveOut = SKAction.move(to: CGPoint(x: -0.5, y: 0.5), duration: 0.5)
+        presentingBackground?.run(moveOut) {
+            self.presentingBackground?.removeFromParent()
+        }
+    }
+    
+    func moveInNewNode(of state: StateMachineSymbol?) {
+        let node = createNode(for: state)
+        let moveIn = SKAction.move(to: CGPoint(x: 0.5, y: 0.5), duration: 0.5)
+        node.run(moveIn) {
+            self.presentingBackground? = node
+        }
         
-        showingNode?.run(moveOut)
-        outsideNode?.run(moveIn)
-        
-        showingNode = showingNode == backgroundNode1 ? backgroundNode2 : backgroundNode1
-        outsideNode = outsideNode == backgroundNode1 ? backgroundNode2 : backgroundNode1
     }
 }

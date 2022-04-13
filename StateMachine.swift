@@ -11,12 +11,14 @@ class StateMachineSymbol {
     let phrase: String
     var options: [(text: String, state: StateMachineSymbol)]
     let sceneName: String
+    let frames: Int
     let pixelColor: String
     
-    internal init(phrase: String, options: [(text: String, state: StateMachineSymbol)], sceneName: String, pixelColor: String) {
+    internal init(phrase: String, options: [(text: String, state: StateMachineSymbol)], sceneName: String, frames: Int, pixelColor: String) {
             self.phrase = phrase
             self.options = options
             self.sceneName = sceneName
+            self.frames = frames
             self.pixelColor = pixelColor
         }
 }
@@ -26,19 +28,19 @@ class StateMachine {
     var currentState: StateMachineSymbol
     
     init() {
-        let atom = StateMachineSymbol(phrase: "You're an atom.", options: [], sceneName: "atom", pixelColor: "atom")
-        let partOfSomething = StateMachineSymbol(phrase: "That means you got to be part of something.", options: [], sceneName: "atom", pixelColor: "atom")
-        let alone = StateMachineSymbol(phrase: "There's so much you'll loose being alone.", options: [], sceneName: "alone", pixelColor: "atom")
-        let stardust = StateMachineSymbol(phrase: "What if you were stardust? or part of a floating big rock?", options: [], sceneName: "stardust", pixelColor: "stardust")
-        let arrival = StateMachineSymbol(phrase: "You got on a planet on a beautiful night.", options: [], sceneName: "arrival", pixelColor: "stardust")
-        let meteor = StateMachineSymbol(phrase: "The universal laws eventually made you be atracted to a bigger rock.", options: [], sceneName: "meteor", pixelColor: "meteor")
-        let dinossaur = StateMachineSymbol(phrase: "Some strange kind of life may have disappeared.", options: [], sceneName: "dinossaur", pixelColor: "meteor")
-        let rock = StateMachineSymbol(phrase: "You're part of a smaller fragment of what you used to be part of.", options: [], sceneName: "rock", pixelColor: "rock")
-        let water = StateMachineSymbol(phrase: "You're part of the water.", options: [], sceneName: "Water", pixelColor: "water")
-        let bottle = StateMachineSymbol(phrase: "You're inside a bottle.", options: [], sceneName: "bottle", pixelColor: "bottle")
-        let human = StateMachineSymbol(phrase: "You're part of a conscious been.", options: [], sceneName: "human", pixelColor: "human")
-        let dream = StateMachineSymbol(phrase: "", options: [], sceneName: "dream", pixelColor: "dream")
-        let nightmare = StateMachineSymbol(phrase: "You always thought you were unbreakable, but now you're part of the end.", options: [], sceneName: "nightmare", pixelColor: "nightmare")
+        let atom = StateMachineSymbol(phrase: "You're an atom.", options: [], sceneName: "atom", frames: 2, pixelColor: "atom")
+        let partOfSomething = StateMachineSymbol(phrase: "That means you got to be part of something.", options: [], sceneName: "atom", frames: 3, pixelColor: "atom")
+        let alone = StateMachineSymbol(phrase: "There's so much you'll loose being alone.", options: [], sceneName: "alone", frames: 3, pixelColor: "atom")
+        let stardust = StateMachineSymbol(phrase: "What if you were stardust? or part of a floating big rock?", options: [], sceneName: "stardust", frames: 3, pixelColor: "stardust")
+        let arrival = StateMachineSymbol(phrase: "You got on a planet on a beautiful night.", options: [], sceneName: "arrival", frames: 3, pixelColor: "stardust")
+        let meteor = StateMachineSymbol(phrase: "The universal laws eventually made you be atracted to a bigger rock.", options: [], sceneName: "meteor", frames: 3, pixelColor: "meteor")
+        let dinossaur = StateMachineSymbol(phrase: "Some strange kind of life may have disappeared.", options: [], sceneName: "dinossaur", frames: 3, pixelColor: "meteor")
+        let rock = StateMachineSymbol(phrase: "You're part of a smaller fragment of what you used to be part of.", options: [], sceneName: "rock", frames: 3, pixelColor: "rock")
+        let water = StateMachineSymbol(phrase: "You're part of the water.", options: [], sceneName: "Water", frames: 3, pixelColor: "water")
+        let bottle = StateMachineSymbol(phrase: "You're inside a bottle.", options: [], sceneName: "bottle", frames: 3, pixelColor: "bottle")
+        let human = StateMachineSymbol(phrase: "You're part of a conscious been.", options: [], sceneName: "human", frames: 3, pixelColor: "human")
+        let dream = StateMachineSymbol(phrase: "", options: [], sceneName: "dream", frames: 3, pixelColor: "dream")
+        let nightmare = StateMachineSymbol(phrase: "You always thought you were unbreakable, but now you're part of the end.", options: [], sceneName: "nightmare", frames: 3, pixelColor: "nightmare")
         
         atom.options = [(text: "What does that mean?", state: partOfSomething)]
         partOfSomething.options = [(text: "Why?", state: alone), (text: "I've got to be part of something.", state: stardust)]

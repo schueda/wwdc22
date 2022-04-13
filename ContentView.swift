@@ -9,8 +9,9 @@ struct ContentView: View {
     @State var buttonTexts: [String] = []
     
     var scene: GameScene {
-        let scene = GameScene()
+        let scene = store.scene
         scene.stateMachine = store.stateMachine
+        scene.view?.showsNodeCount = true
         return scene
     }
     
