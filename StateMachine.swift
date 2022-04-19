@@ -28,12 +28,12 @@ class StateMachine {
     var currentState: StateMachineSymbol
     
     init() {
-        let atom = StateMachineSymbol(phrase: "You're an atom.", options: [], sceneName: "atom", frames: 2, pixelColor: "atom")
-        let partOfSomething = StateMachineSymbol(phrase: "That means you got to be part of something.", options: [], sceneName: "atom", frames: 3, pixelColor: "atom")
-        let alone = StateMachineSymbol(phrase: "There's so much you'll loose being alone.", options: [], sceneName: "alone", frames: 3, pixelColor: "atom")
-        let stardust = StateMachineSymbol(phrase: "What if you were stardust? or part of a floating big rock?", options: [], sceneName: "stardust", frames: 3, pixelColor: "stardust")
-        let arrival = StateMachineSymbol(phrase: "You got on a planet on a beautiful night.", options: [], sceneName: "arrival", frames: 3, pixelColor: "stardust")
-        let meteor = StateMachineSymbol(phrase: "The universal laws eventually made you be atracted to a bigger rock.", options: [], sceneName: "meteor", frames: 3, pixelColor: "meteor")
+        let atom = StateMachineSymbol(phrase: "You're an atom.", options: [], sceneName: "atom", frames: 30, pixelColor: "atom")
+        let partOfSomething = StateMachineSymbol(phrase: "That means you got to be part of something.", options: [], sceneName: "partOfSomething", frames: 24, pixelColor: "atom")
+        let alone = StateMachineSymbol(phrase: "There's so much you'll loose being alone.", options: [], sceneName: "alone", frames: 1, pixelColor: "atom")
+        let stardust = StateMachineSymbol(phrase: "What if you were stardust? or part of a floating big rock?", options: [], sceneName: "stardust", frames: 19, pixelColor: "stardust")
+        let arrival = StateMachineSymbol(phrase: "You've got on a planet on a beautiful night.", options: [], sceneName: "arrival", frames: 11, pixelColor: "stardust")
+        let meteor = StateMachineSymbol(phrase: "The universal laws eventually got you atracted to a bigger rock.", options: [], sceneName: "meteor", frames: 27, pixelColor: "meteor")
         let dinossaur = StateMachineSymbol(phrase: "Some strange kind of life may have disappeared.", options: [], sceneName: "dinossaur", frames: 3, pixelColor: "meteor")
         let rock = StateMachineSymbol(phrase: "You're part of a smaller fragment of what you used to be part of.", options: [], sceneName: "rock", frames: 3, pixelColor: "rock")
         let water = StateMachineSymbol(phrase: "You're part of the water.", options: [], sceneName: "Water", frames: 3, pixelColor: "water")
@@ -44,14 +44,14 @@ class StateMachine {
         
         atom.options = [(text: "What does that mean?", state: partOfSomething)]
         partOfSomething.options = [(text: "Why?", state: alone), (text: "I've got to be part of something.", state: stardust)]
-        alone.options = [(text: "Let me be alone.", state: atom), (text: "I've got to be part of something.", state: partOfSomething)]
+        alone.options = [(text: "Let me be alone.", state: atom), (text: "I've got to be part of something.", state: stardust)]
         stardust.options = [(text: "I am stardust", state: arrival), (text: "I'm part of a big rock", state: meteor)]
         arrival.options = [(text: "Am I part of this world?", state: water)]
         meteor.options = [(text: "Has this hit?", state: dinossaur)]
-        dinossaur.options = [(text: "I wonder if somebody will miss them.", state: rock)]
+        dinossaur.options = [(text: "I guess I'll miss them.", state: rock)]
         rock.options = [(text: "I'm just a rock on the riverside.", state: water)]
         water.options = [(text: "Am I the water itself?", state: bottle)]
-        bottle.options = [(text: "I always thought i'd be part of something bigger", state: human)]
+        bottle.options = [(text: "I always thought i'd be part of something bigger.", state: human)]
         human.options = [(text: "Could I be part of beautiful dreams?", state: dream), (text: "Could I be part of nasty nightmares?", state: nightmare)]
         dream.options = [(text: "I hope this means something...", state: human)]
         nightmare.options = [(text: "How come I be part of something so big?", state: atom)]

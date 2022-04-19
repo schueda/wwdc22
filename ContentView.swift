@@ -7,6 +7,7 @@ struct ContentView: View {
 
     @State var narratorText: String = ""
     @State var buttonTexts: [String] = []
+    @State var isShowingText: Bool = true
     
     var scene: GameScene {
         let scene = store.scene
@@ -22,30 +23,33 @@ struct ContentView: View {
                 .disabled(true)
             
             VStack {
-                HStack {
-                    Spacer()
-                    Text(narratorText)
-                        .padding(.vertical, 16)
-                        .multilineTextAlignment(.center)
-                    Spacer()
+                if isShowingText {
+                    HStack {
+                        Text(narratorText)
+                            .padding(.vertical, 16)
+                            .padding(.horizontal, 16)
+                            .multilineTextAlignment(.leading)
+                        Spacer()
+                    }
+                    .background(Color.gray.opacity(0.7))
+                    .padding(.top, 16)
+                    .padding(.horizontal, 16)
                 }
-                .background(Color.gray.opacity(0.7))
-                .padding(.top, 16)
-                .padding(.horizontal, 16)
                 
                 Spacer()
                 
                 VStack() {
                     ForEach(0..<buttonTexts.count, id: \.self) { i in
                         HStack(alignment: .top) {
-                            Spacer()
                             Button {
                                 optionSelected(index: i)
                             } label: {
                                 Text("\(i+1). \(buttonTexts[i])")
                                     .foregroundColor(.black)
                                     .padding(.top, 16)
+                                    .padding(.horizontal, 16)
                                     .lineLimit(2)
+                                    .multilineTextAlignment(.leading)
                             }
                             Spacer()
                         }
@@ -66,11 +70,32 @@ struct ContentView: View {
     }
     
     func optionSelected(index: Int) {
-        let currentState = scene.stateMachine?.transition(to: index)
-        narratorText = currentState?.phrase ?? ""
-        buttonTexts = currentState?.options.map { $0.text } ?? []
-        scene.present(currentState)
+        guard let currentState = scene.stateMachine?.transition(to: index) else { return }
+        isShowingText = false
+        buttonTexts = []
+        narratorText = ""
+        
+        scene.present(currentState) {
+            if !(currentState.phrase.isEmpty) {
+                isShowingText = true
+                var count = 0
+                var auxString = ""
+                _ = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true){ t in
+                    if !(count < currentState.phrase.count - 1) {
+                        t.invalidate()
+                        writeButtonTexts(currentState)
+                    }
+                    auxString += "\(currentState.phrase[count])"
+                    narratorText = auxString
+                    count += 1
+                }
+            }
+            
+        }
+    }
+    
+    func writeButtonTexts(_ state: StateMachineSymbol) {
+        buttonTexts = state.options.map { $0.text }
     }
 
 }
-

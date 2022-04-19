@@ -16,7 +16,7 @@ let package = Package(
         .iOSApplication(
             name: "wwdc22",
             targets: ["AppModule"],
-            bundleIdentifier: "andre.wwdc22",
+            bundleIdentifier: "schueda.wwdc22",
             teamIdentifier: "46LT924HJ5",
             displayVersion: "1.0",
             bundleVersion: "1",
