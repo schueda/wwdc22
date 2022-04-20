@@ -13,12 +13,14 @@ class GameScene: SKScene {
     var stateMachine: StateMachine?
     var presentingBackground: SKSpriteNode?
     
+    let transitionLength: CGFloat = 0.5
+    
     lazy var atomNode: SKSpriteNode = {
         let node = SKSpriteNode()
         node.size = CGSize(width: 20, height: 20)
         node.position = CGPoint(x: 0, y: 0)
         node.zPosition = 1000
-        node.color = UIColor(named: "appBlue1")!
+        node.color = UIColor.appWhite
         return node
     }()
     
@@ -47,7 +49,7 @@ class GameScene: SKScene {
     }
     
     private func moveOutPresentingBackground() {
-        let moveOut = SKAction.move(to: CGPoint(x: -360, y: 0), duration: 0.5)
+        let moveOut = SKAction.move(to: CGPoint(x: -360, y: 0), duration: transitionLength)
         presentingBackground?.run(moveOut) {
             self.presentingBackground?.removeFromParent()
         }
@@ -67,7 +69,7 @@ class GameScene: SKScene {
     }
     
     private func moveIn(background: SKSpriteNode, callback: (()->())? = nil) {
-        let moveIn = SKAction.move(to: CGPoint(x: 0, y: 0), duration: 0.5)
+        let moveIn = SKAction.move(to: CGPoint(x: 0, y: 0), duration: transitionLength)
         background.run(moveIn) {
             self.presentingBackground? = background
             
@@ -92,8 +94,8 @@ class GameScene: SKScene {
         
         atomNode.removeAllActions()
         
-        let move = SKAction.move(to: state.pixelPosition, duration: 0.5)
-        let colorize = SKAction.colorize(with: state.pixelColor, colorBlendFactor: 1, duration: 0.5)
+        let move = SKAction.move(to: state.pixelPosition, duration: transitionLength)
+        let colorize = SKAction.colorize(with: state.pixelColor, colorBlendFactor: 1, duration: transitionLength)
         let group = SKAction.group([move, colorize])
         atomNode.run(group)
         
@@ -113,10 +115,12 @@ class GameScene: SKScene {
     }
     
     private func floatingAnimation() -> SKAction {
-        let moveTop = SKAction.move(by: CGVector(dx: 0, dy: 5), duration: 1.5)
-        let moveBottom = SKAction.move(by: CGVector(dx: 0, dy: -5), duration: 1.5)
-        let sequence = SKAction.sequence([moveTop, moveBottom])
-        return SKAction.repeatForever(sequence)
+        let initialWait = SKAction.wait(forDuration: transitionLength)
+        
+        let moveUp = SKAction.moveBy(x: 0, y: 5, duration: 1)
+        let moveDown = SKAction.moveBy(x: 0, y: -5, duration: 1)
+        let sequence = SKAction.sequence([moveUp, moveDown, moveDown, moveUp])
+        return SKAction.sequence([initialWait, SKAction.repeatForever(sequence)])
     }
     
     private func blueAndOrangeAnimation() -> SKAction {
