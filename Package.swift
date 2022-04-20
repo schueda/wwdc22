@@ -8,17 +8,14 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "wwdc22",
+    name: "",
     platforms: [
         .iOS("15.2")
     ],
     products: [
         .iOSApplication(
-            name: "wwdc22",
+            name: "",
             targets: ["AppModule"],
-            bundleIdentifier: "schueda.wwdc22",
-            teamIdentifier: "46LT924HJ5",
-            displayVersion: "1.0",
             bundleVersion: "1",
             iconAssetName: "AppIcon",
             accentColorAssetName: "AccentColor",
@@ -37,7 +34,11 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "AppModule",
-            path: "."
+            path: ".",
+            resources: [
+                .process("Resources"),
+                .process("Kenney Mini.ttf")
+            ]
         )
     ]
 )
