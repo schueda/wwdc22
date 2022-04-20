@@ -7,18 +7,53 @@
 
 import Foundation
 import SpriteKit
+import UIKit
 
 class GameScene: SKScene {
     var stateMachine: StateMachine?
     var presentingBackground: SKSpriteNode?
     
+    lazy var atomNode: SKSpriteNode = {
+        let node = SKSpriteNode()
+        node.size = CGSize(width: 20, height: 20)
+        node.position = CGPoint(x: 0, y: 0)
+        node.zPosition = 1000
+        node.color = UIColor(named: "appBlue1")!
+        return node
+    }()
+    
     override func didMove(to view: SKView) {
-        let node = createNode(for: stateMachine?.initialState)
-        node.position = CGPoint(x: 0.5, y: 0.5)
-        presentingBackground = node
+        addChild(atomNode)
+        presentingBackground = initialPresent(stateMachine?.initialState)
     }
     
-    func createNode(for state: StateMachineSymbol?) -> SKSpriteNode {
+    private func initialPresent(_ state: StateMachineSymbol?) -> SKSpriteNode {
+        let newNode = createNode(for: stateMachine?.currentState)
+        newNode.position = CGPoint(x: 0, y: 0)
+        updateAtomNode(by: state)
+        
+        return newNode
+    }
+    
+    func present(_ state: StateMachineSymbol?, callback: (()->())? = nil) {
+        moveOutPresentingBackground()
+        let newNode = createNode(for: stateMachine?.currentState)
+        moveIn(background: newNode) {
+            guard let callback = callback else { return }
+            callback()
+        }
+        
+        updateAtomNode(by: state)
+    }
+    
+    private func moveOutPresentingBackground() {
+        let moveOut = SKAction.move(to: CGPoint(x: -360, y: 0), duration: 0.5)
+        presentingBackground?.run(moveOut) {
+            self.presentingBackground?.removeFromParent()
+        }
+    }
+    
+    private func createNode(for state: StateMachineSymbol?) -> SKSpriteNode {
         guard let state = state else { return SKSpriteNode() }
         let node = SKSpriteNode()
         node.position = CGPoint(x: 360, y: 0)
@@ -31,7 +66,17 @@ class GameScene: SKScene {
         return node
     }
     
-    func makeAnimation(for state: StateMachineSymbol) -> SKAction {
+    private func moveIn(background: SKSpriteNode, callback: (()->())? = nil) {
+        let moveIn = SKAction.move(to: CGPoint(x: 0, y: 0), duration: 0.5)
+        background.run(moveIn) {
+            self.presentingBackground? = background
+            
+            guard let callback = callback else { return }
+            callback()
+        }
+    }
+    
+    private func makeAnimation(for state: StateMachineSymbol) -> SKAction {
         var textures: [SKTexture] = []
         for i in (0..<state.frames) {
             let texture = SKTexture(imageNamed: "\(state.sceneName)Frame\(i+1)")
@@ -42,28 +87,44 @@ class GameScene: SKScene {
         return SKAction.repeatForever(animation)
     }
     
-    func present(_ state: StateMachineSymbol?, callback: (()->())?) {
-        moveOutPresentingNode()
-        let newNode = createNode(for: stateMachine?.currentState)
-        moveIn(node: newNode) {
-            guard let callback = callback else { return }
-            callback()            
-        }
+    private func updateAtomNode(by state: StateMachineSymbol?) {
+        guard let state = state else { return }
         
+        atomNode.removeAllActions()
+        
+        let move = SKAction.move(to: state.pixelPosition, duration: 0.5)
+        let colorize = SKAction.colorize(with: state.pixelColor, colorBlendFactor: 1, duration: 0.5)
+        let group = SKAction.group([move, colorize])
+        atomNode.run(group)
+        
+        guard let action = getPixelAction(for: state) else { return }
+        atomNode.run(action)
     }
     
-    func moveOutPresentingNode() {
-        let moveOut = SKAction.move(to: CGPoint(x: -360, y: 0), duration: 0.5)
-        presentingBackground?.run(moveOut) {
-            self.presentingBackground?.removeFromParent()
+    private func getPixelAction(for state: StateMachineSymbol) -> SKAction? {
+        switch state.pixelAction {
+        case .floating:
+            return floatingAnimation()
+        case .blueAndOrange:
+            return blueAndOrangeAnimation()
+        default:
+            return nil
         }
     }
     
-    func moveIn(node: SKSpriteNode, callback: (()->())!) {
-        let moveIn = SKAction.move(to: CGPoint(x: 0, y: 0), duration: 0.5)
-        node.run(moveIn) {
-            self.presentingBackground? = node
-            callback()
-        }
+    private func floatingAnimation() -> SKAction {
+        let moveTop = SKAction.move(by: CGVector(dx: 0, dy: 5), duration: 1.5)
+        let moveBottom = SKAction.move(by: CGVector(dx: 0, dy: -5), duration: 1.5)
+        let sequence = SKAction.sequence([moveTop, moveBottom])
+        return SKAction.repeatForever(sequence)
+    }
+    
+    private func blueAndOrangeAnimation() -> SKAction {
+        let colorizeWhite = SKAction.colorize(with: .appWhite, colorBlendFactor: 1, duration: 0.4)
+        let colorizeBlue = SKAction.colorize(with: .appBlue2, colorBlendFactor: 1, duration: 0.4)
+        let colorizeOrange = SKAction.colorize(with: .appOrange1, colorBlendFactor: 1, duration: 0.4)
+        let wait = SKAction.wait(forDuration: 0.3)
+        let sequence = SKAction.sequence([colorizeBlue, wait, colorizeWhite, wait, colorizeOrange, colorizeWhite, wait])
+        return SKAction.repeatForever(sequence)
     }
 }

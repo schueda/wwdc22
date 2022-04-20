@@ -29,9 +29,10 @@ struct ContentView: View {
                             .padding(.vertical, 16)
                             .padding(.horizontal, 16)
                             .multilineTextAlignment(.leading)
+                            .foregroundColor(Color.init(uiColor: .appWhite))
                         Spacer()
                     }
-                    .background(Color.gray.opacity(0.7))
+                    .background(Color.init(uiColor: .appBlack).opacity(0.9))
                     .padding(.top, 16)
                     .padding(.horizontal, 16)
                 }
@@ -45,11 +46,11 @@ struct ContentView: View {
                                 optionSelected(index: i)
                             } label: {
                                 Text("\(i+1). \(buttonTexts[i])")
-                                    .foregroundColor(.black)
                                     .padding(.top, 16)
                                     .padding(.horizontal, 16)
                                     .lineLimit(2)
                                     .multilineTextAlignment(.leading)
+                                    .foregroundColor(Color.init(uiColor: .appWhite))
                             }
                             Spacer()
                         }
@@ -57,7 +58,7 @@ struct ContentView: View {
                     Spacer()
                 }
                 .frame(height: 150)
-                .background(Color.gray.opacity(0.7))
+                .background(Color.init(uiColor: .appBlack).opacity(0.9))
                 .padding(.bottom, 16)
                 .padding(.horizontal, 16)
             }
@@ -89,8 +90,9 @@ struct ContentView: View {
                     narratorText = auxString
                     count += 1
                 }
+            } else {
+                writeButtonTexts(currentState)                
             }
-            
         }
     }
     
