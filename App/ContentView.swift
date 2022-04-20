@@ -30,6 +30,7 @@ struct ContentView: View {
                             .padding(.horizontal, 16)
                             .multilineTextAlignment(.leading)
                             .foregroundColor(Color.init(uiColor: .appWhite))
+                            .font(.custom("Kenney-Mini", size: 40))
                         Spacer()
                     }
                     .background(Color.init(uiColor: .appBlack).opacity(0.9))
@@ -51,6 +52,7 @@ struct ContentView: View {
                                     .lineLimit(2)
                                     .multilineTextAlignment(.leading)
                                     .foregroundColor(Color.init(uiColor: .appWhite))
+                                    .font(.custom("Kenney-Mini", size: 30))
                             }
                             Spacer()
                         }
