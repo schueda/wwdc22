@@ -13,6 +13,8 @@ class GameScene: SKScene {
     var stateMachine: StateMachine?
     var presentingBackground: SKSpriteNode?
     
+    let transitionInterval: TimeInterval = 0.5
+    
     lazy var atomNode: SKSpriteNode = {
         let node = SKSpriteNode()
         node.size = CGSize(width: 20, height: 20)
@@ -47,7 +49,7 @@ class GameScene: SKScene {
     }
     
     private func moveOutPresentingBackground() {
-        let moveOut = SKAction.move(to: CGPoint(x: -360, y: 0), duration: 0.5)
+        let moveOut = SKAction.move(to: CGPoint(x: -360, y: 0), duration: transitionInterval)
         presentingBackground?.run(moveOut) {
             self.presentingBackground?.removeFromParent()
         }
@@ -67,7 +69,7 @@ class GameScene: SKScene {
     }
     
     private func moveIn(background: SKSpriteNode, callback: (()->())? = nil) {
-        let moveIn = SKAction.move(to: CGPoint(x: 0, y: 0), duration: 0.5)
+        let moveIn = SKAction.move(to: CGPoint(x: 0, y: 0), duration: transitionInterval)
         background.run(moveIn) {
             self.presentingBackground? = background
             
@@ -92,8 +94,8 @@ class GameScene: SKScene {
         
         atomNode.removeAllActions()
         
-        let move = SKAction.move(to: state.pixelPosition, duration: 0.5)
-        let colorize = SKAction.colorize(with: state.pixelColor, colorBlendFactor: 1, duration: 0.5)
+        let move = SKAction.move(to: state.pixelPosition, duration: transitionInterval)
+        let colorize = SKAction.colorize(with: state.pixelColor, colorBlendFactor: 1, duration: transitionInterval)
         let group = SKAction.group([move, colorize])
         atomNode.run(group)
         
@@ -107,24 +109,52 @@ class GameScene: SKScene {
             return floatingAnimation()
         case .blueAndOrange:
             return blueAndOrangeAnimation()
+        case .swingWithColor:
+            return swingAnimation()
         default:
             return nil
         }
     }
     
     private func floatingAnimation() -> SKAction {
-        let moveTop = SKAction.move(by: CGVector(dx: 0, dy: 5), duration: 1.5)
-        let moveBottom = SKAction.move(by: CGVector(dx: 0, dy: -5), duration: 1.5)
-        let sequence = SKAction.sequence([moveTop, moveBottom])
-        return SKAction.repeatForever(sequence)
+        let transitionWait = SKAction.wait(forDuration: transitionInterval)
+        
+        let moveUp = SKAction.move(by: CGVector(dx: 0, dy: 3), duration: 1)
+        let moveDown = SKAction.move(by: CGVector(dx: 0, dy: -3), duration: 1)
+        let sequence = SKAction.sequence([moveUp, moveDown, moveDown, moveUp])
+        let loop = SKAction.repeatForever(sequence)
+        return SKAction.sequence([transitionWait, loop])
     }
     
     private func blueAndOrangeAnimation() -> SKAction {
+        let transitionWait = SKAction.wait(forDuration: transitionInterval)
+        
         let colorizeWhite = SKAction.colorize(with: .appWhite, colorBlendFactor: 1, duration: 0.4)
         let colorizeBlue = SKAction.colorize(with: .appBlue2, colorBlendFactor: 1, duration: 0.4)
         let colorizeOrange = SKAction.colorize(with: .appOrange1, colorBlendFactor: 1, duration: 0.4)
         let wait = SKAction.wait(forDuration: 0.3)
         let sequence = SKAction.sequence([colorizeBlue, wait, colorizeWhite, wait, colorizeOrange, colorizeWhite, wait])
-        return SKAction.repeatForever(sequence)
+        let loop = SKAction.repeatForever(sequence)
+        return SKAction.sequence([transitionWait, loop])
+    }
+    
+    private func swingAnimation() -> SKAction {
+        let transitionWait = SKAction.wait(forDuration: transitionInterval)
+        
+        let colorizeWhite = SKAction.colorize(with: .appWhite, colorBlendFactor: 1, duration: 1)
+        let colorizeBlue = SKAction.colorize(with: .appBlue2, colorBlendFactor: 1, duration: 1)
+        let colorizeOrange = SKAction.colorize(with: .appOrange1, colorBlendFactor: 1, duration: 1)
+        let wait = SKAction.wait(forDuration: 0.3)
+        let colorSequence = SKAction.sequence([colorizeBlue, wait, colorizeWhite, colorizeOrange, wait, colorizeWhite])
+        let colorLoop = SKAction.repeatForever(colorSequence)
+        
+        let moveLeft = SKAction.move(by: CGVector(dx: -80, dy: 0), duration: 1)
+        let moveRight = SKAction.move(by: CGVector(dx: 80, dy: 0), duration: 1)
+        let moveSequence = SKAction.sequence([moveRight, wait, moveLeft, moveLeft, wait, moveRight])
+        let moveLoop = SKAction.repeatForever(moveSequence)
+        
+        let group = SKAction.group([colorLoop, moveLoop])
+        
+        return SKAction.sequence([transitionWait, group])
     }
 }
