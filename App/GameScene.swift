@@ -80,12 +80,12 @@ class GameScene: SKScene {
     
     private func makeAnimation(for state: StateMachineSymbol) -> SKAction {
         var textures: [SKTexture] = []
-        for i in (0..<state.frames) {
+        for i in (0..<state.numberOfFrames) {
             let texture = SKTexture(imageNamed: "\(state.sceneName)Frame\(i+1)")
             texture.filteringMode = .nearest
             textures.append(texture)
         }
-        let animation = SKAction.animate(with: textures, timePerFrame: 0.1)
+        let animation = SKAction.animate(with: textures, timePerFrame: state.timePerFrame)
         return SKAction.repeatForever(animation)
     }
     

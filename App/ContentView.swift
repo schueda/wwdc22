@@ -83,7 +83,7 @@ struct ContentView: View {
                 isShowingText = true
                 var count = 0
                 var auxString = ""
-                _ = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true){ t in
+                _ = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true){ t in
                     if !(count < currentState.phrase.count - 1) {
                         t.invalidate()
                         writeButtonTexts(currentState)
