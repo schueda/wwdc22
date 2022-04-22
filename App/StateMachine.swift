@@ -40,14 +40,14 @@ class StateMachine {
         let partOfSomething = StateMachineSymbol(phrase: "That means you got to be part of something.", options: [], sceneName: "partOfSomething", numberOfFrames: 24, timePerFrame: 0.1, pixelColor: .appWhite, pixelPosition: CGPoint(x: 0, y: 4), pixelAction: .blueAndOrange)
         let alone = StateMachineSymbol(phrase: "There's so much you'll loose being alone.", options: [], sceneName: "answer", numberOfFrames: 1, timePerFrame: 0.1, pixelColor: .appWhite, pixelPosition: CGPoint(x: 0, y: 0), pixelAction: .floating)
         let aloneAnswer = StateMachineSymbol(phrase: "You wander around, meaningless...", options: [], sceneName: "answer", numberOfFrames: 1, timePerFrame: 0.1, pixelColor: .appWhite, pixelPosition: CGPoint(x: 0, y: 0), pixelAction: .wanderAnimation)
-        let stardust = StateMachineSymbol(phrase: "What if you were stardust? or part of a burning big rock?", options: [], sceneName: "stardust", numberOfFrames: 19, timePerFrame: 0.1, pixelColor: .appWhite, pixelPosition: CGPoint(x: 0, y: 75), pixelAction: .swingWithColor)
+        let stardust = StateMachineSymbol(phrase: "What if you were part of a burning big rock? or stardust?", options: [], sceneName: "stardust", numberOfFrames: 19, timePerFrame: 0.1, pixelColor: .appWhite, pixelPosition: CGPoint(x: 0, y: 75), pixelAction: .swingWithColor)
         let arrival = StateMachineSymbol(phrase: "You've got on a planet on a beautiful night.", options: [], sceneName: "arrival", numberOfFrames: 11, timePerFrame: 0.1, pixelColor: .appBlack, pixelPosition: CGPoint(x: -125, y: -125))
-        let meteor = StateMachineSymbol(phrase: "The universal laws eventually got you atracted to a bigger rock.", options: [], sceneName: "meteor", numberOfFrames: 27, timePerFrame: 0.1, pixelColor: .clear, pixelPosition: CGPoint(x: -300, y: 300))
+        let meteor = StateMachineSymbol(phrase: "The universal laws eventually got you attracted to a bigger rock.", options: [], sceneName: "meteor", numberOfFrames: 27, timePerFrame: 0.1, pixelColor: .clear, pixelPosition: CGPoint(x: -300, y: 300))
         let dinosaur = StateMachineSymbol(phrase: "Some strange kind of life may have disappeared.", options: [], sceneName: "dinosaur", numberOfFrames: 3, timePerFrame: 1, pixelColor: .clear, pixelPosition: CGPoint(x: 0, y: 0))
         let rock = StateMachineSymbol(phrase: "You're part of a smaller fragment of what you used to be part of.", options: [], sceneName: "rock", numberOfFrames: 16, timePerFrame: 0.15, pixelColor: .appBlack, pixelPosition: CGPoint(x: 10, y: 20))
-        let water = StateMachineSymbol(phrase: "You're part of the water.", options: [], sceneName: "Water", numberOfFrames: 3, timePerFrame: 0.1, pixelColor: .red, pixelPosition: CGPoint(x: 0, y: 0))
+        let water = StateMachineSymbol(phrase: "You're part of the water.", options: [], sceneName: "water", numberOfFrames: 15, timePerFrame: 0.3, pixelColor: .appBlue3, pixelPosition: CGPoint(x: 0, y: 5))
         let bottle = StateMachineSymbol(phrase: "You're inside a bottle.", options: [], sceneName: "bottle", numberOfFrames: 1, timePerFrame: 0.1, pixelColor: .appBlue3, pixelPosition: CGPoint(x: 0, y: 0))
-        let human = StateMachineSymbol(phrase: "You're part of a conscious being.", options: [], sceneName: "human", numberOfFrames: 3, timePerFrame: 0.1, pixelColor: .red, pixelPosition: CGPoint(x: 0, y: 0))
+        let human = StateMachineSymbol(phrase: "You're part of a conscious being.", options: [], sceneName: "human", numberOfFrames: 4, timePerFrame: 0.5, pixelColor: .appBlue4, pixelPosition: CGPoint(x: 7, y: 70))
         let dream = StateMachineSymbol(phrase: "", options: [], sceneName: "dream", numberOfFrames: 8, timePerFrame: 0.5, pixelColor: .appBlack, pixelPosition: CGPoint(x: 30, y: 0))
         let dreamAnswer = StateMachineSymbol(phrase: "Of course this means something. It means everything, and nothing. It means whatever you gave it a meaning. You mean whatever you give yourself a meaning.", options: [], sceneName: "answer", numberOfFrames: 9, timePerFrame: 0.1, pixelColor: .appWhite, pixelPosition: CGPoint(x: 0, y: 4))
         let nightmare = StateMachineSymbol(phrase: "You always thought you were unbreakable, but now you're part of the end.", options: [], sceneName: "nightmare", numberOfFrames: 3, timePerFrame: 0.1, pixelColor: .red, pixelPosition: CGPoint(x: 0, y: 0))
@@ -70,7 +70,7 @@ class StateMachine {
         nightmare.options = [(text: "How come I be part of something so big?", state: nightmareAnswer)]
         nightmareAnswer.options = [(text: "...", state: atom)]
         
-        initialState = atom
+        initialState = rock
         currentState = initialState
     }
     
