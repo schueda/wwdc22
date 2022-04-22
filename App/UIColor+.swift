@@ -25,6 +25,9 @@ extension UIColor {
     open class var appBlue3: UIColor { get {
         UIColor(named: "appBlue3")!
     }}
+    open class var appBlue4: UIColor { get {
+        UIColor(named: "appBlue4")!
+    }}
     
     open class var appOrange1: UIColor { get {
         UIColor(named: "appOrange1")!

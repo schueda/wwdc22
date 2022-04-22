@@ -12,7 +12,6 @@ struct ContentView: View {
     var scene: GameScene {
         let scene = store.scene
         scene.stateMachine = store.stateMachine
-        scene.view?.showsNodeCount = true
         return scene
     }
     

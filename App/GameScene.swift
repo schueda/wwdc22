@@ -13,14 +13,14 @@ class GameScene: SKScene {
     var stateMachine: StateMachine?
     var presentingBackground: SKSpriteNode?
     
-    let transitionInterval: TimeInterval = 0.5
+    let transitionInterval: TimeInterval = 1
     
     lazy var atomNode: SKSpriteNode = {
         let node = SKSpriteNode()
         node.size = CGSize(width: 20, height: 20)
         node.position = CGPoint(x: 0, y: 0)
         node.zPosition = 1000
-        node.color = UIColor(named: "appBlue1")!
+        node.color = .appWhite
         return node
     }()
     
@@ -111,6 +111,8 @@ class GameScene: SKScene {
             return blueAndOrangeAnimation()
         case .swingWithColor:
             return swingAnimation()
+        case .wanderAnimation:
+            return SKAction.sequence((0...10000).map({ _ in wanderAnimation() }))
         default:
             return nil
         }
@@ -156,5 +158,17 @@ class GameScene: SKScene {
         let group = SKAction.group([colorLoop, moveLoop])
         
         return SKAction.sequence([transitionWait, group])
+    }
+    
+    private func wanderAnimation() -> SKAction {
+        let minX = (-size.width/2 + 100)
+        let maxX = (size.width/2 - 100)
+        let minY = (-size.height/2 + 200)
+        let maxY = (size.height/2 - 200)
+        
+        let newX = CGFloat.random(in: minX...maxX)
+        let newY = CGFloat.random(in: minY...maxY)
+        
+        return SKAction.move(to: CGPoint(x: newX, y: newY), duration: 2)
     }
 }
